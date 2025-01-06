@@ -2038,6 +2038,7 @@ void Engine::tick(int message) {
   estimateRaceSizes();
   refreshScoreBoard();
   forcescoreboard = true;
+  checkSpreadJobTimeouts();
 }
 
 void Engine::issueGlobalComplete(const std::shared_ptr<Race> & race) {
@@ -2200,4 +2201,26 @@ int Engine::getMaxSpreadJobTimeSeconds() const {
 
 void Engine::setMaxSpreadJobTimeSeconds(int seconds) {
   maxspreadjobtimeseconds = seconds;
+}
+
+void Engine::checkSpreadJobTimeouts() {
+  std::list<std::shared_ptr<Race>>::iterator it;
+  for (it = currentraces.begin(); it != currentraces.end(); ) {
+    std::shared_ptr<Race> race = *it;
+    if (race->isDone()) {
+      ++it;
+      continue;
+    }
+    int sectionMaxTime = global->getSectionManager()->getSection(race->getSection())->getMaxTime();
+    // Convert minutes to seconds (if not -1 which means unlimited)
+    int timeoutLimit = (sectionMaxTime > 0) ? sectionMaxTime * 60 : maxspreadjobtimeseconds;
+    if (timeoutLimit > 0 && static_cast<int>(race->getTimeSpent()) > timeoutLimit) {
+      global->getEventLog()->log("Engine", "Spread job " + race->getName() + " timed out after " +
+          std::to_string(timeoutLimit / 60) + " minutes in section " + race->getSection() + ".");
+      race->setTimeout();
+      it = currentraces.erase(it);
+      continue;
+    }
+    ++it;
+  }
 }

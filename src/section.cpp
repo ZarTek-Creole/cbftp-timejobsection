@@ -2,11 +2,11 @@
 
 #include "globalcontext.h"
 
-Section::Section() : jobs(0), skiplist(global->getSkipList()), hotkey(-1) {
+Section::Section() : jobs(0), skiplist(global->getSkipList()), hotkey(-1), maxtime(-1) {
 
 }
 
-Section::Section(const std::string & name) : name(name), jobs(0), skiplist(global->getSkipList()), hotkey(-1) {
+Section::Section(const std::string & name) : name(name), jobs(0), skiplist(global->getSkipList()), hotkey(-1), maxtime(-1) {
 
 }
 
@@ -44,4 +44,12 @@ int Section::getHotKey() const {
 
 void Section::setHotKey(int hotkey) {
   this->hotkey = hotkey;
+}
+
+int Section::getMaxTime() const {
+  return maxtime;
+}
+
+void Section::setMaxTime(int seconds) {
+  this->maxtime = seconds;
 }

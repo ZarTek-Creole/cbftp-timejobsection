@@ -12,17 +12,7 @@ FmtString MenuSelectOptionNumArrow::getContentText() const {
 }
 
 bool MenuSelectOptionNumArrow::inputChar(int ch) {
-  switch(ch) {
-    case KEY_DOWN:
-    case KEY_LEFT:
-      arrow.decrease();
-      return true;
-    case KEY_UP:
-    case KEY_RIGHT:
-      arrow.increase();
-      return true;
-  }
-  return false;
+  return arrow.inputChar(ch);
 }
 
 bool MenuSelectOptionNumArrow::activate() {
@@ -43,7 +33,7 @@ void MenuSelectOptionNumArrow::setData(int value) {
 }
 
 std::string MenuSelectOptionNumArrow::getLegendText() const {
-  return "[Enter] Finish editing - [Left] Decrease value - [Right] Increase value";
+  return "[Enter] Finish editing - Enter minutes (0 for unlimited, 1-9999) - [Backspace] Delete";
 }
 
 void MenuSelectOptionNumArrow::setSubstituteText(int value, const std::string & text) {

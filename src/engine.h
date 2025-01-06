@@ -156,6 +156,7 @@ public:
   void clearSkipListCaches();
   void rotateSpreadJobsHistory();
   void rotateTransferJobsHistory();
+  void checkSpreadJobTimeouts();
   JobList<std::shared_ptr<Race>> allraces;
   JobList<std::shared_ptr<Race>> currentraces;
   JobList<std::shared_ptr<Race>> finishedraces;

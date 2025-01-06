@@ -833,6 +833,47 @@ void SettingsLoaderSaver::loadSettings() {
   for (std::list<SettingsAdder *>::iterator it = settingsadders.begin(); it != settingsadders.end(); it++) {
     (*it)->loadSettings(dfh);
   }
+
+  {
+    std::string filetag = "SectionManager";
+    std::map<std::string, Section> sections;
+    std::map<std::string, SkipList *> skiplists;
+    std::vector<std::string> sectionlines;
+    dfh->getDataFor(filetag, &sectionlines);
+    for (std::vector<std::string>::iterator it = sectionlines.begin(); it != sectionlines.end(); it++) {
+      std::string line = *it;
+      size_t split = line.find("=");
+      std::string variable = line.substr(0, split);
+      std::string value = line.substr(split + 1);
+      size_t dollarsplit = variable.find("$");
+      std::string sectionname;
+      if (dollarsplit != std::string::npos) {
+        sectionname = variable.substr(0, dollarsplit);
+        variable = variable.substr(dollarsplit + 1);
+      }
+      if (!sectionname.empty()) {
+        if (sections.find(sectionname) == sections.end()) {
+          sections[sectionname] = Section(sectionname);
+          skiplists[sectionname] = &(sections[sectionname].getSkipList());
+        }
+        if (variable == "jobs") {
+          sections[sectionname].setNumJobs(std::stoi(value));
+        }
+        else if (variable == "hotkey") {
+          sections[sectionname].setHotKey(std::stoi(value));
+        }
+        else if (variable == "maxtime") {
+          sections[sectionname].setMaxTime(std::stoi(value));
+        }
+        else if (variable == "skiplistentry") {
+          skiplists[sectionname]->addEntry(false, value, true, true, 0, SKIPLIST_DENY);
+        }
+      }
+    }
+    for (std::map<std::string, Section>::iterator it = sections.begin(); it != sections.end(); it++) {
+      global->getSectionManager()->addSection(it->second);
+    }
+  }
 }
 
 void SettingsLoaderSaver::saveSettings() {
@@ -1076,7 +1117,8 @@ void SettingsLoaderSaver::saveSettings() {
     for (auto it = global->getSectionManager()->begin(); it != global->getSectionManager()->end(); ++it) {
       const Section & section = it->second;
       dfh->addOutputLine(filetag, section.getName() + "$jobs=" + std::to_string(section.getNumJobs()));
-      dfh->addOutputLine(filetag,  section.getName() + "$hotkey=" + std::to_string(section.getHotKey()));
+      dfh->addOutputLine(filetag, section.getName() + "$hotkey=" + std::to_string(section.getHotKey()));
+      dfh->addOutputLine(filetag, section.getName() + "$maxtime=" + std::to_string(section.getMaxTime()));
       addSkipList(dfh, &section.getSkipList(), filetag, section.getName() + "$skiplistentry=");
     }
   }

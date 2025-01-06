@@ -17,9 +17,12 @@ public:
   void addJob();
   int getHotKey() const;
   void setHotKey(int hotkey);
+  int getMaxTime() const;
+  void setMaxTime(int seconds);
 private:
   std::string name;
   int jobs;
   SkipList skiplist;
   int hotkey;
+  int maxtime;
 };
