@@ -2214,7 +2214,31 @@ void Engine::checkSpreadJobTimeouts() {
     int sectionMaxTime = global->getSectionManager()->getSection(race->getSection())->getMaxTime();
     // Convert minutes to seconds (if not -1 which means unlimited)
     int timeoutLimit = (sectionMaxTime > 0) ? sectionMaxTime * 60 : maxspreadjobtimeseconds;
+    
     if (timeoutLimit > 0 && static_cast<int>(race->getTimeSpent()) > timeoutLimit) {
+      // Check if there are any active transfers for this race
+      bool hasActiveTransfers = false;
+      for (std::set<std::pair<std::shared_ptr<SiteRace>, std::shared_ptr<SiteLogic>>>::const_iterator its = race->begin(); its != race->end(); its++) {
+        if (its->second->hasActiveTransfers(its->first)) {
+          hasActiveTransfers = true;
+          break;
+        }
+      }
+      
+      if (hasActiveTransfers) {
+        // If there are active transfers, extend the timeout by 50% of the original time
+        int extensionTime = timeoutLimit / 2;
+        if (static_cast<int>(race->getTimeSpent()) <= timeoutLimit + extensionTime) {
+          global->getEventLog()->log("Engine", "Spread job " + race->getName() + 
+              " timeout extended due to active transfers. Original timeout: " +
+              std::to_string(timeoutLimit / 60) + " minutes, extension: " +
+              std::to_string(extensionTime / 60) + " minutes.");
+          ++it;
+          continue;
+        }
+      }
+      
+      // If no active transfers or extended timeout also expired
       global->getEventLog()->log("Engine", "Spread job " + race->getName() + " timed out after " +
           std::to_string(timeoutLimit / 60) + " minutes in section " + race->getSection() + ".");
       race->setTimeout();

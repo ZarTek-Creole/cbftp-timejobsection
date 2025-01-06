@@ -196,4 +196,5 @@ class SiteLogic : public Core::EventReceiver {
     void list(int);
     void listAll(int);
     const ConnStateTracker* getConnStateTracker(int) const;
+    bool hasActiveTransfers(const std::shared_ptr<SiteRace>& race) const;
 };

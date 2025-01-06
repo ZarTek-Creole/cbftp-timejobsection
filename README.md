@@ -1,8 +1,18 @@
 # CBFTP TimeJobSection
 
-A CBFTP fork (revision 1274) that enhances time management for jobs and sections with an improved user interface for time selection.
+A CBFTP fork (revision 1274) that enhances time management for jobs and sections with an improved user interface for time selection and intelligent timeout handling.
 
 ## Added Features
+
+### Smart Timeout Management
+- Enhanced timeout handling for spread jobs with active transfers:
+  - Detects active FXP transfers before applying timeouts
+  - Automatically extends timeout by 50% when transfers are in progress
+  - Prevents data loss from premature job termination
+  - Logs timeout extensions for monitoring
+  - Only terminates jobs when:
+    - No active transfers are detected, or
+    - Extended timeout period has also expired
 
 ### Section Time Management
 - Added predefined time options for the "Max Time (seconds)" field in section settings
@@ -30,6 +40,24 @@ A CBFTP fork (revision 1274) that enhances time management for jobs and sections
 - Added arrow key navigation for time selection fields
 - Consistent time selection interface across site and section settings
 - Improved user experience with direct arrow key handling without requiring explicit field activation
+
+### Implementation Details
+The smart timeout system implements:
+1. Active transfer detection
+   - Monitors FXP transfer status
+   - Tracks ongoing file operations
+   - Prevents data loss from premature termination
+
+2. Dynamic timeout adjustment
+   - Base timeout from section settings
+   - Extension logic for active transfers
+   - Configurable extension parameters
+   - Status tracking and reporting
+
+3. Graceful termination
+   - Completion of active transfers
+   - Clean state management
+   - Detailed logging of timeout extensions
 
 ## Changes from Original CBFTP
 

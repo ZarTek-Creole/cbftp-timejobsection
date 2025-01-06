@@ -2628,3 +2628,13 @@ std::string SiteLogic::expandVariables(const std::string& text) const {
   }
   return expanded;
 }
+
+bool SiteLogic::hasActiveTransfers(const std::shared_ptr<SiteRace>& race) const {
+  for (unsigned int i = 0; i < conns.size(); ++i) {
+    const ConnStateTracker* cst = &connstatetracker[i];
+    if (cst->getTransferFileList() && cst->getTransferFileList() == race->getFileListForFullPath(const_cast<SiteLogic*>(this), race->getPath())) {
+      return true;
+    }
+  }
+  return false;
+}
