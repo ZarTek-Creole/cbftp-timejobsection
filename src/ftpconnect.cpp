@@ -10,9 +10,7 @@
 #include "proxysession.h"
 #include "proxy.h"
 
-#define WELCOME_TIMEOUT_MSEC 7000
-
-FTPConnect::FTPConnect(int id, FTPConnectOwner* owner, const Address& addr, Proxy* proxy, bool primary, bool implicittls) :
+FTPConnect::FTPConnect(int id, FTPConnectOwner* owner, const Address& addr, Proxy* proxy, bool primary, bool implicittls, unsigned int welcometimeout) :
   id(id),
   owner(owner),
   databuflen(DATA_BUF_SIZE),
@@ -25,7 +23,8 @@ FTPConnect::FTPConnect(int id, FTPConnectOwner* owner, const Address& addr, Prox
   connected(false),
   welcomereceived(false),
   millisecs(0),
-  implicittls(implicittls)
+  implicittls(implicittls),
+  welcometimeout(welcometimeout)
 {
   interConnect(addr, proxy);
 }
@@ -120,9 +119,9 @@ void FTPConnect::disengage() {
 
 void FTPConnect::tickIntern() {
   millisecs += 1000;
-  if (millisecs >= WELCOME_TIMEOUT_MSEC) {
+  if (millisecs >= welcometimeout) {
     if (engaged && connected && !welcomereceived) {
-      owner->ftpConnectInfo(id, "[" + addr.toString() + "][Timeout while waiting for welcome message]");
+      owner->ftpConnectInfo(id, "[" + addr.toString() + "][Timeout while waiting for welcome message after " + std::to_string(millisecs/1000) + " seconds]");
       disengage();
       owner->ftpConnectFail(id);
     }

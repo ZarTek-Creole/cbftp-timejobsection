@@ -14,7 +14,7 @@ struct Address;
 
 class FTPConnect : public EventReceiverProxyIntermediate {
 public:
-  FTPConnect(int id, FTPConnectOwner* owner, const Address& addr, Proxy* proxy, bool primary, bool implicittls);
+  FTPConnect(int id, FTPConnectOwner* owner, const Address& addr, Proxy* proxy, bool primary, bool implicittls, unsigned int welcometimeout = 15000);
   ~FTPConnect();
   int getId() const;
   int handedOver();
@@ -43,6 +43,7 @@ private:
   bool engaged;
   bool connected;
   bool welcomereceived;
-  int millisecs;
+  unsigned int millisecs;
   bool implicittls;
+  unsigned int welcometimeout;
 };

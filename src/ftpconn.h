@@ -127,6 +127,7 @@ class FTPConn : private Core::EventReceiver, public FTPConnectOwner {
     bool typeirun;
     bool cleanlyclosed;
     Address connectedaddr;
+    int welcometimeout;
     void AUTHTLSResponse();
     void USERResponse();
     void PASSResponse();
@@ -191,7 +192,7 @@ class FTPConn : private Core::EventReceiver, public FTPConnectOwner {
     void login();
     void reconnect();
     bool isProcessing() const;
-    FTPConn(SiteLogic *, int);
+    FTPConn(SiteLogic *, int, unsigned int welcometimeout = 15000);
     ~FTPConn();
     void updateName();
     const Path & getCurrentPath() const;

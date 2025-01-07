@@ -59,7 +59,7 @@ Address parseAddress(std::string address) {
 }
 
 Site::Site() : skiplist(global->getSkipList()) {
-
+  welcometimeout = 15000;
 }
 
 Site::Site(const std::string& name) :
@@ -74,6 +74,7 @@ Site::Site(const std::string& name) :
   maxdncomplete(-2),
   maxdntransferjob(-2),
   maxidletime(60),
+  welcometimeout(15000),
   pret(false),
   binary(false),
   listcommand(SITE_LIST_STAT),
@@ -120,6 +121,7 @@ Site::Site(const Site& other) {
   freeslot = other.freeslot;
   stayloggedin = other.stayloggedin;
   maxidletime = other.maxidletime;
+  welcometimeout = other.welcometimeout;
   pret = other.pret;
   binary = other.binary;
   listcommand = other.listcommand;
@@ -1042,4 +1044,12 @@ std::string Site::getFreeText() const {
 
 void Site::setFreeText(const std::string& freetext) {
   this->freetext = freetext;
+}
+
+unsigned int Site::getWelcomeTimeoutMilliseconds() const {
+  return welcometimeout;
+}
+
+void Site::setWelcomeTimeoutMilliseconds(unsigned int timeout) {
+  welcometimeout = timeout;
 }

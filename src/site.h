@@ -79,6 +79,7 @@ private:
   int maxdncomplete;
   int maxdntransferjob;
   unsigned int maxidletime;
+  unsigned int welcometimeout;
   bool pret;
   bool binary;
   int listcommand;
@@ -286,4 +287,6 @@ public:
   void setMaxSpreadJobTimeSeconds(int seconds);
   std::string getFreeText() const;
   void setFreeText(const std::string& freetext);
+  unsigned int getWelcomeTimeoutMilliseconds() const;
+  void setWelcomeTimeoutMilliseconds(unsigned int timeout);
 };

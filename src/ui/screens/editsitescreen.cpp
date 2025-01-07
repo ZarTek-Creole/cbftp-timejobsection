@@ -162,8 +162,23 @@ void EditSiteScreen::initialize(unsigned int row, unsigned int col, const std::s
   mso.addCheckBox(y, x, "binary", "Force binary mode:", this->site->forceBinaryMode());
   mso.addCheckBox(y++, x + 23, "brokenpasv", "Broken PASV:", this->site->hasBrokenPASV());
   mso.addStringField(y, x, "idletime", "Max idle time (s):", std::to_string(this->site->getMaxIdleTime()), false, 4);
-  mso.addCheckBox(y, x + 25, "xdupe", "Use XDUPE:", this->site->useXDUPE());
-  mso.addCheckBox(y++, x + 41, "pret", "Needs PRET:", this->site->needsPRET());
+  std::shared_ptr<MenuSelectOptionTextArrow> welcometimeout = mso.addTextArrow(y, x + 25, "welcometimeout", "Welcome timeout:");
+  welcometimeout->addOption("5s", 5000);
+  welcometimeout->addOption("10s", 10000);
+  welcometimeout->addOption("15s", 15000);
+  welcometimeout->addOption("20s", 20000);
+  welcometimeout->addOption("30s", 30000);
+  welcometimeout->addOption("45s", 45000);
+  welcometimeout->addOption("1m", 60000);
+  welcometimeout->addOption("1m30s", 90000);
+  welcometimeout->addOption("2m", 120000);
+  welcometimeout->addOption("3m", 180000);
+  welcometimeout->addOption("4m", 240000);
+  welcometimeout->addOption("5m", 300000);
+  welcometimeout->addOption("Disable", 0);
+  welcometimeout->setOption(this->site->getWelcomeTimeoutMilliseconds());
+  mso.addCheckBox(y, x + 55, "xdupe", "Use XDUPE:", this->site->useXDUPE());
+  mso.addCheckBox(y++, x + 71, "pret", "Needs PRET:", this->site->needsPRET());
   std::shared_ptr<MenuSelectOptionTextArrow> useproxy = mso.addTextArrow(y, x, "useproxy", "Proxy:");
   std::shared_ptr<MenuSelectOptionTextArrow> usedataproxy = mso.addTextArrow(y++, x + 25, "dataproxy", "Data proxy:");
   ProxyManager * pm = global->getProxyManager();
@@ -533,6 +548,9 @@ bool EditSiteScreen::keyPressed(unsigned int ch) {
         }
         else if (identifier == "idletime") {
           site->setMaxIdleTime(std::stoi(std::static_pointer_cast<MenuSelectOptionTextField>(msoe)->getData()));
+        }
+        else if (identifier == "welcometimeout") {
+          site->setWelcomeTimeoutMilliseconds(std::static_pointer_cast<MenuSelectOptionTextArrow>(msoe)->getData());
         }
         else if (identifier == "useproxy") {
           int proxytype = std::static_pointer_cast<MenuSelectOptionTextArrow>(msoe)->getData();

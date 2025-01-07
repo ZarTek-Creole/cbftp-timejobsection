@@ -176,7 +176,7 @@ SiteLogic::SiteLogic(const std::string & sitename) :
 
   for (unsigned int i = 0; i < site->getMaxLogins(); i++) {
     connstatetracker.push_back(ConnStateTracker());
-    conns.push_back(new FTPConn(this, i));
+    conns.push_back(new FTPConn(this, i, site->getWelcomeTimeoutMilliseconds()));
   }
 }
 

@@ -54,7 +54,7 @@ std::string toPASVString(const std::string & addr, int port) {
   return pasv + "," + std::to_string(portfirst) + "," + std::to_string(portsecond);
 }
 
-FTPConn::FTPConn(SiteLogic * sl, int id) :
+FTPConn::FTPConn(SiteLogic * sl, int id, unsigned int welcometimeout) :
   nextconnectorid(0),
   iom(global->getIOManager()),
   databuflen(DATA_BUF_SIZE),
@@ -81,8 +81,9 @@ FTPConn::FTPConn(SiteLogic * sl, int id) :
   cwdrawbuf(new RawBuffer(site->getName())),
   xduperun(false),
   typeirun(false),
-  cleanlyclosed(false) {
-
+  cleanlyclosed(false),
+  welcometimeout(welcometimeout)
+{
 }
 
 FTPConn::~FTPConn() {
@@ -127,7 +128,7 @@ void FTPConn::login() {
   currentpath = "/";
   state = FTPConnState::CONNECTING;
   clearConnectors();
-  connectors.push_back(std::make_shared<FTPConnect>(nextconnectorid++, this, site->getAddress(), getProxy(), true, site->getTLSMode() == TLSMode::IMPLICIT));
+  connectors.push_back(std::make_shared<FTPConnect>(nextconnectorid++, this, site->getAddress(), getProxy(), true, site->getTLSMode() == TLSMode::IMPLICIT, welcometimeout));
   ticker = 0;
   global->getTickPoke()->startPoke(this, "FTPConn", FTPCONN_TICK_INTERVAL, 0);
 }
@@ -1524,7 +1525,6 @@ void FTPConn::parseXDUPEData() {
     memcpy(databuf + xdupestart, "[XDUPE data retrieved]\r\n", 24);
     databufpos -= xdupeend - xdupestart - 24;
   }
-
 }
 
 bool FTPConn::isConnected() const {
