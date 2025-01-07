@@ -1,8 +1,15 @@
 # CBFTP TimeJobSection
 
-A CBFTP fork (revision 1274) that enhances time management for jobs and sections with an improved user interface for time selection and intelligent timeout handling.
+A CBFTP fork (revision 1274) that enhances time management for jobs and sections with an improved user interface for time selection, intelligent timeout handling, and enhanced welcome message timeout management.
 
 ## Added Features
+
+### Welcome Message Timeout Enhancement
+- Improved welcome message timeout handling:
+  - Default timeout increased to 15 seconds for better compatibility with IDENT-requiring FTP servers
+  - Added detailed timeout messages showing elapsed time
+  - Configurable timeout value per site
+  - Better handling of slow-responding FTP servers
 
 ### Smart Timeout Management
 - Enhanced timeout handling for spread jobs with active transfers:
@@ -59,6 +66,12 @@ The smart timeout system implements:
    - Clean state management
    - Detailed logging of timeout extensions
 
+4. Welcome Message Timeout
+   - Per-site configurable welcome timeout
+   - Detailed logging with elapsed time
+   - Improved error handling
+   - Better compatibility with various FTP server configurations
+
 ## Changes from Original CBFTP
 
 1. Modified `src/ui/screens/editsectionscreen.cpp`:
@@ -68,6 +81,12 @@ The smart timeout system implements:
    - Unified time selection behavior with site settings
 
 2. Added time selection helper functions similar to site settings
+
+3. Enhanced welcome message timeout handling in:
+   - `src/ftpconnect.cpp`: Added elapsed time to timeout messages
+   - `src/site.cpp`: Increased default timeout to 15 seconds
+   - `src/ftpconn.cpp`: Improved timeout handling
+   - `src/sitelogic.cpp`: Enhanced connection management
 
 ## Installation
 
