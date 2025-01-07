@@ -97,3 +97,21 @@ This fork maintains the original CBFTP license.
 ## Original CBFTP Repository
 
 The original CBFTP can be found at: https://github.com/cbftp/cbftp 
+
+## GitHub Actions Workflows and CI/CD Pipeline
+
+This project uses GitHub Actions for continuous integration and deployment. The following workflows are included:
+
+### Build Workflow
+The build workflow is responsible for compiling the project. It is triggered on every push and pull request to the `main` branch.
+
+### Test Workflow
+The test workflow runs the project's test suite. It is triggered on every push and pull request to the `main` branch.
+
+### Deploy Workflow
+The deploy workflow handles the deployment of the project. It is triggered on every push to the `main` branch and on the creation of new tags.
+
+### Using the Workflows
+To use the GitHub Actions workflows, simply push your changes to the repository. The workflows will be triggered automatically based on the specified events.
+
+For more details on the workflows, refer to the `.github/workflows` directory in the repository.
