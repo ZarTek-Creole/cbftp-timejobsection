@@ -247,9 +247,6 @@ void EditSiteScreen::initialize(unsigned int row, unsigned int col, const std::s
   maxspreadjobtimeseconds->setOption(this->site->getMaxSpreadJobTimeSeconds());
   maxtransfertimeseconds->setOption(this->site->getMaxTransferTimeSeconds());
   y++;
-  std::shared_ptr<MenuSelectOptionTextArrow> maxtime = mso.addTextArrow(y++, x, "maxtime", "Max Time (minutes):");
-  addRuntimeOptions(maxtime);
-  maxtime->setOption(this->site->getMaxSpreadJobTimeSeconds());
   mso.enterFocusFrom(0);
   init(row, col);
 }
