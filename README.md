@@ -1,5 +1,13 @@
 # CBFTP TimeJobSection
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Language: C++](https://img.shields.io/badge/Language-C%2B%2B-blue.svg)](https://isocpp.org/)
+[![Platform: Linux/Unix](https://img.shields.io/badge/Platform-Linux%2FUnix-green.svg)](https://www.linux.org/)
+
+> **Enhanced CBFTP fork for advanced FTP automation with intelligent timeout management**
+
+# CBFTP TimeJobSection
+
 A CBFTP fork (revision 1274) that enhances time management for jobs and sections with an improved user interface for time selection, intelligent timeout handling, and enhanced welcome message timeout management.
 
 ## Added Features
@@ -134,3 +142,12 @@ The deploy workflow handles the deployment of the project. It is triggered on ev
 To use the GitHub Actions workflows, simply push your changes to the repository. The workflows will be triggered automatically based on the specified events.
 
 For more details on the workflows, refer to the `.github/workflows` directory in the repository.
+
+
+For more details on the workflows, refer to the `.github/workflows` directory in the repository.
+
+---
+
+## Keywords & Tags
+
+FTP client, CBFTP, FTP automation, FXP transfer, file synchronization, timeout management, C++ FTP, Linux FTP tool, Unix FTP, ncurses interface, spread jobs, FTP server management, intelligent timeout, welcome message timeout, section management, job automation, FTP monitoring, cross-platform FTP, network file transfer, automated FTP sync
